@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="my" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +10,6 @@
 <style>
 table{border-collapse: collapse;margin-bottom:10px;}
 tr{cursor:pointer;}
-tr:hover{background:#ccc;}
 tr th, td{padding:10px;}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -24,6 +24,13 @@ $(function(){
 <body>
 <div align="center">
 <h2>목록</h2>
+<form action="getSearchDept" name="searchFrm">
+	<input type="hidden" name="page" value="1">
+	deptID <input name="department_id" value="${deptSearchVO.department_id}">
+	deptNAME <input name="department_name" value="${deptSearchVO.department_name}">
+	locationID<input name="location_id" value="${deptSearchVO.location_id}">
+	<button>검색</button>
+</form><br>
 <table border="1">
 <tr>
 <th>department_id</th>
@@ -40,6 +47,14 @@ $(function(){
 </tr>
 </c:forEach>
 </table>
+<my:paging paging="${paging}" jsFunc="goPage" />
+<script>
+	function goPage(p){
+		searchFrm.page.value=p;
+		searchFrm.submit();
+	}
+</script>
+
 <button id="btnInsert">등록</button>
 </div>
 </body>

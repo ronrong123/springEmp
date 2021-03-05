@@ -13,7 +13,7 @@
 	</bean> 
 	<!-- context, mvc는 namespaces에서 선택해서 사용 -->
 	<!-- component, controller, service, repository -->
-	<context:component-scan base-package="com.yedam.emp"></context:component-scan>
+	<context:component-scan base-package="com.yedam"></context:component-scan>
 	<!-- @PostMapping, @ResponseBody -->
 	<mvc:annotation-driven />
 	<!-- mvc:annotation-driven: 나머지 @을 전부 스캔 -->

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yedam.emp.DeptSearchVO;
 import com.yedam.emp.DeptVO;
 import com.yedam.emp.service.DeptService;
 
@@ -31,6 +32,11 @@ public class DeptServiceImpl implements DeptService {
 	public List<DeptVO> getSearchDept(DeptVO vo) {
 		// TODO Auto-generated method stub
 		return dao.getSearchDept(vo);
+	}
+
+	public int getCount(DeptSearchVO vo) {
+		// TODO Auto-generated method stub
+		return dao.getCount(vo);
 	}
 
 }

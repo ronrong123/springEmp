@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>      
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,29 +10,29 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h3 id="top">사원수정</h3>
-
-<form action="insertEmp" method="post" name="frm">
-	employee_id <input type="number" name="employee_id"><br>
-	first_name  <input name="first_name"><br>
-	last_name   <input name="last_name"><br>
-	email       <input type="email" id="email" name="email"><button type="button" id="btnEmail">중복체크</button>&nbsp;<span id="emailResult"></span><br>
-	phone_number<input type="text" name="phone_number" id="btnEmail"><br>
-	hire_date   <input type="date" name="hire_date"><br>
-	job_id 		<select name="job_id">
-				<option value="AC_ACCOUNT">Accounting Manager</option>
-				</select> 
-	<br>
+<h3 id="top">사원등록</h3>
+<form:form modelAttribute="empVO" action="insertEmp" method="post" path="frm">
+	employee_id <form:input path="employee_id" /><br>
+	first_name  <form:input path="first_name" /><br>
+	last_name   <form:input path="last_name" /><br>
+	email       <form:input type="email" path="email" /><button type="button" id="btnEmail">중복체크</button>&nbsp;<span id="emailResult"></span><br>
+	phone_number<form:input type="text" path="phone_number" /><br>
+	hire_date   <form:input type="date" path="hire_date" /><br>
 	department_id 
-	<input type="radio" id="department_id" name="department_id" value="10">기획
+	<form:radiobuttons path="department_id" items="${deptList }" itemLabel="department_name" itemValue="department_id"/>기획
 				 <br>
+	job_id 		<form:select path="job_id">
+				<option value="">선택</option>
+				<form:options items="${jobList }" itemLabel="job_title" itemValue="job_id"/>
+				</form:select> 
+	<br>
 	manager_id 
-	<input type="text" name="manager_id">
+	<form:input path="manager_id" />
 	<input type="text" name="name">
 	<button type="button" id="btn">사원검색</button><br>	
 
 	<button type="submit">등록</button>
 	<button type="reset">초기화</button>
-</form>
+</form:form>
 </body>
 </html>

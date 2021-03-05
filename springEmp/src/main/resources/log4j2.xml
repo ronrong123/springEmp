@@ -29,7 +29,7 @@
         <Logger name="org.springframework" level="begub" additivity="false">
             <AppenderRef ref="console_com" />
         </Logger>
-        <Root level="error">
+        <Root level="debug">
             <AppenderRef ref="console_com" />
             <!-- <AppenderRef ref="MyFile" /> -->
         </Root>

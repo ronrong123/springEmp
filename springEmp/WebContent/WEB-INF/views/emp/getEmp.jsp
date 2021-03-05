@@ -17,6 +17,8 @@ $(function(){
 <title>Insert title here</title>
 </head>
 <body>
+파라미터  ${empVO }
+<hr>
 사번 : ${emp.employee_id } <br>
 이름 : ${emp.first_name } ${emp.last_name }<br>
 이메일 : ${emp.email }<br>

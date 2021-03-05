@@ -2,7 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yedam.emp.service.impl.EmpMapper">
-	<select id="getSearchEmp" parameterType="emp" resultType="emp">
+	<!-- 레코드건수 조회 -->
+	<select id="getCount" resultType="int">
+		SELECT COUNT(*) FROM EMPLOYEES
+		<where>
+			<if test="department_id != null and department_id != ''">
+				DEPARTMENT_ID = #{department_id}
+			</if>
+			<if test="job_id != null and job_id != ''">
+				AND JOB_ID = #{job_id}
+			</if>
+			<if test="first_name != null and first_name != ''">
+				AND FIRST_NAME = #{first_name}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getSearchEmp" parameterType="EmpSearchVO" resultType="emp">
+	select b.*   from( select rownum rn, a.*    from (
 		SELECT  
 				E.EMPLOYEE_ID,
 				E.FIRST_NAME,
@@ -22,7 +39,19 @@
 		LEFT OUTER JOIN JOBS J
 		ON
 		J.JOB_ID = E.JOB_ID
+		<where>
+			<if test="department_id != null and department_id != ''">
+				E.DEPARTMENT_ID = #{department_id}
+			</if>
+			<if test="job_id != null and job_id != ''">
+				AND E.JOB_ID = #{job_id}
+			</if>
+			<if test="first_name != null and first_name != ''">
+				AND E.FIRST_NAME = #{first_name}
+			</if>
+		</where>
 		ORDER BY DEPARTMENT_ID
+		) a) b where rn between #{start} and #{end}	
 		<!-- select일 경우 resultType가 꼭 들어가야함(어떤 VO에 담을건지 넣어야함) -->
 	</select>
 	<insert id="insertEmp" parameterType="emp">

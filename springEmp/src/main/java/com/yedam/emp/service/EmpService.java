@@ -2,6 +2,7 @@ package com.yedam.emp.service;
 
 import java.util.List;
 
+import com.yedam.emp.EmpSearchVO;
 import com.yedam.emp.EmpVO;
 
 public interface EmpService {
@@ -16,6 +17,8 @@ public interface EmpService {
 	//단건조회
 	public EmpVO getEmp(EmpVO vo);	
 	//전체/검색조회
-	public List<EmpVO> getSearchEmp(EmpVO vo);
+	public List<EmpVO> getSearchEmp(EmpSearchVO vo);
+	//레코드건수
+	public int getCount(EmpSearchVO vo);
 	
 }
