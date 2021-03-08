@@ -1,8 +1,11 @@
 package com.yedam.emp.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,15 +34,24 @@ public class EmpController {
 	//emp
 	@GetMapping("/insertEmp") //등록페이지로
 	public String insertEmp(EmpVO vo, Model model, DeptSearchVO dsearchVO, JobVO jobvo) {
-		dsearchVO.setStart(1);
-		dsearchVO.setEnd(1000);
+//		dsearchVO.setStart(1);
+//		dsearchVO.setEnd(1000);
 		model.addAttribute("deptList", deptService.getSearchDept(dsearchVO));
 		return "/emp/insertEmp";
 	}
 	@PostMapping("/insertEmp") //등록처리
-	public String insertEmpProc(EmpVO vo) {
-		empService.insertEmp(vo);
-		return "redirect:/getSearchEmp";
+	public String insertEmpProc(@Valid EmpVO vo, BindingResult result,Model model,  DeptSearchVO dsearchVO) {
+		//service 단이 아닌 객체 안에서, 들어오는 값에 대해 검증을 할 수 있다.
+		//입력값 검증
+//		EmpValidation empValidation = new EmpValidation();
+//		empValidation.validate(vo, result);
+		if(result.hasErrors()){//하나라도 에러가있으면
+			model.addAttribute("deptList", deptService.getSearchDept(dsearchVO));
+			return "/emp/insertEmp"; //insert페이지로 넘어감
+		}else {
+			empService.insertEmp(vo);
+			return "redirect:/getSearchEmp";
+		}
 	}
 	@GetMapping("/updateEmp") //수정페이지로
 	public String updateEmp(EmpVO vo, Model model, DeptSearchVO dsearchVO, JobVO jobvo) {

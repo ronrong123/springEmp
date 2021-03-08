@@ -14,4 +14,8 @@ public interface UserService {
 	public int updateUser(UserVO vo);
 	//등록
 	public void insertUser(UserVO vo);
+	//로그인
+	public boolean logCheck(UserVO vo);
+	//패스워드변경
+	public int updatePw(UserVO vo);
 }

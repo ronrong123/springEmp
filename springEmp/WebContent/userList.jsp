@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>RESTful 웹서비스 클라이언트(JSON)</title>
+<title>웹서비스 클라이언트(JSON)</title>
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -38,7 +38,26 @@
 	function userDelete() {
 		//삭제 버튼 클릭
 		$('body').on('click','#btnDelete',function(){
-
+			if(! confirm('삭제할까요?')){
+				return;
+			}
+			var userId = $(this).closest('tr').find('#hidden_userId').val();
+			var tr = $(this).closest('tr');
+				$.ajax({
+					url:'deleteuser',
+					data : {id:userId},
+					method:'GET', //디폴트가 GET이라 생략가능
+					dataType:"json",
+					error:function(xhr,status,msg){
+						console.log("상태값 :" + status + " Http에러메시지 :"+msg);
+					}, success:function(response) {
+						if(response.cnt ==1){
+							tr.remove();
+						}else{
+							alert('삭제오류');
+						}
+					}
+			});
 		}); //삭제 버튼 클릭
 	}//userDelete
 	
@@ -46,7 +65,19 @@
 	function userSelect() {
 		//조회 버튼 클릭
 		$('body').on('click','#btnSelect',function(){
-
+			var userId = $(this).closest('tr').find('#hidden_userId').val();
+			//특정 사용자 조회
+			$.ajax({
+				url:'getuser',
+				data : {id:userId}, //"id=" + userId
+				//method:'GET', //디폴트가 get이라 안적어도됨.
+				//contentType:'application/json;charset=utf-8', //RequestBody가있으면 추가하는것 없으면 필요없음
+				dataType:'json',
+				error:function(xhr,status,msg){
+					alert("상태값 :" + status + " Http에러메시지 :"+msg);
+				},
+				success:userSelectResult
+			});
 		}); //조회 버튼 클릭
 	}//userSelect
 	
@@ -61,8 +92,22 @@
 	//사용자 수정 요청
 	function userUpdate() {
 		//수정 버튼 클릭
-		$('#btnUpdate').on('click',function(){
-
+		$('#btnUpdate').on('click',function(){			
+			$.ajax({
+				url:"updateuser",
+				method:"post",
+				data:$("#form1").serialize(),
+				//contentType:"application/json",
+				dataType:"json",
+				success:function(response){
+					//폼필드 초기화
+					document.form1.reset();
+					//tr태그 수정된 데이터로 교체 아니면 전체조회
+					var tr = makeTr(response);
+					var oldTr = $("td:contains('"+response.id+"')").parent();
+					oldTr.replaceWith(tr);
+				}				
+			});
 		});//수정 버튼 클릭
 	}//userUpdate
 	
@@ -75,13 +120,15 @@
  						password:$("[name=password]").val() , 
  						role:$("[name=role]").val()}; */
 			$.ajax({
- 				url : "User",
+ 				url : "insertuser",
  				method : "post", 
- 				data : JSON.stringify($("#form1").serializeObject()),	//json으로 보낼거면 반드시 stringify를 해야함.
- 				contentType : 'application/json', //보낼 데이터가 json이라는걸 알려줌 -> @requestBody
+ 				data : $("#form1").serialize(),	
+ 				//contentType : 'application/json', //보낼 데이터가 json이라는걸 알려줌 -> @requestBody
  				dataType : "json",				  //응답결과가 json  JSON.parse()
  				success : function(response){
  					console.table(response);
+					document.form1.reset();
+					userList();
  				}
  			});
 		});//등록 버튼 클릭
@@ -90,7 +137,7 @@
 	//사용자 목록 조회 요청
 	function userList() {
 		$.ajax({
-			url:'User',
+			url:'getuserlist',
 			type:'GET',
 			dataType:'json',
 			error:function(xhr,status,msg){
@@ -104,22 +151,26 @@
 	function userListResult(data) {
 		$("tbody").empty();
 		$.each(data,function(idx,item){
-			$('<tr>')
-			.append($('<td>').html(item.id))
-			.append($('<td>').html(item.name))
-			.append($('<td>').html(item.password))
-			.append($('<td>').html(item.role))
-			.append($('<td>').html('<button id=\'btnSelect\'>조회</button>'))
-			.append($('<td>').html('<button id=\'btnDelete\'>삭제</button>'))
-			.append($('<input type=\'hidden\' id=\'hidden_userId\'>').val(item.id))
-			.appendTo('tbody');
+			var tr=makeTr(item);
+			tr.appendTo('tbody');
 		});//each
 	}//userListResult
+	
+	function makeTr(item){
+		return $('<tr>')
+		.append($('<td>').html(item.id))
+		.append($('<td>').html(item.name))
+		.append($('<td>').html(item.password))
+		.append($('<td>').html(item.role))
+		.append($('<td>').html('<button id=\'btnSelect\'>조회</button>'))
+		.append($('<td>').html('<button id=\'btnDelete\'>삭제</button>'))
+		.append($('<input type=\'hidden\' id=\'hidden_userId\'>').val(item.id))
+	}
 </script>
 </head>
 <body>
 <div class="container">
-	<form id="form1"  class="form-horizontal">
+	<form id="form1"  name="form1" class="form-horizontal">
 		<h2>사용자 등록 및 수정</h2>
 		<div class="form-group">		
 			<label >아이디:</label>

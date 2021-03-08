@@ -19,4 +19,20 @@
 	<!-- mvc:annotation-driven: 나머지 @을 전부 스캔 -->
 	
 	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
+	
+	<bean id="loginInterceptor" class="com.yedam.emp.common.LoginInterceptor" />
+	<!-- interceptor -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/*"/>
+			<mvc:mapping path="/user"/>
+			<!-- 위에두개를 제외하고는 클릭하면 로그인 페이지가아니더라도 로그인페이지로 들어가게됨 
+				로그인해야 들어갈수있음 -->
+			<mvc:exclude-mapping path="/login"/>
+			<mvc:exclude-mapping path="/"/>
+			<!-- exclude-mapping:빼는것 -->
+			<ref bean="loginInterceptor"/>
+			<!-- 로그인페이지로 보냄?? -->
+		</mvc:interceptor>
+	</mvc:interceptors>
 </beans>

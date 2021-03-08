@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>      
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,9 +14,13 @@
 <h3 id="top">사원등록</h3>
 <form:form modelAttribute="empVO" action="insertEmp" method="post" path="frm">
 	employee_id <form:input path="employee_id" /><br>
-	first_name  <form:input path="first_name" /><br>
-	last_name   <form:input path="last_name" /><br>
-	email       <form:input type="email" path="email" /><button type="button" id="btnEmail">중복체크</button>&nbsp;<span id="emailResult"></span><br>
+	first_name  <form:input path="first_name" />
+				<form:errors path="first_name" cssClass="error" style="color:red"/><br>
+	email       <form:input type="email" path="email" />
+				<form:errors path="email" cssClass="error" style="color:red"/><br>
+	last_name   <form:input path="last_name" />
+				<form:errors path="last_name" cssClass="error" style="color:red"/>
+				<!-- <button type="button" id="btnEmail">중복체크</button>&nbsp;<span id="emailResult"></span> --><br>
 	phone_number<form:input type="text" path="phone_number" /><br>
 	hire_date   <form:input type="date" path="hire_date" /><br>
 	department_id 

@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeptVO {
-	private int department_id;
+	private Integer department_id;
 	private String department_name;
-	private int manager_id;
+	private Integer manager_id;
 	private int location_id;
 }
