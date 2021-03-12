@@ -95,7 +95,7 @@
 				url:"User",
 				method:"PUT",
 				data:JSON.stringify($("#form1").serializeObject()),
-				contentType:"application/json",
+				contentType:"application/json", //보낼데이터 타입을 알려줌 
 				dataType:"json",
 				success:function(response){
 					//폼필드 초기화
